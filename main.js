@@ -2,10 +2,10 @@ const board = document.getElementById('board');
 const cells = document.getElementsByClassName('cell');
 const players = ['X', 'O'];
 let currentPlayer = players[0];
-const endMessage = document.createElement('h2');
-endMessage.textContent = `X turn`;
-board.after(endMessage);
-endMessage.style.textAlign='center';
+const message = document.createElement('h2');
+message.textContent = `X turn`;
+board.after(message);
+message.style.textAlign='center';
 const winningCombinations = [
   [0, 1, 2],
   [3, 4, 5],
@@ -19,23 +19,23 @@ const winningCombinations = [
 
 for (let i = 0; i < cells.length; ++i) {
   cells[i].addEventListener('click', () => {
-    if (cells[i].textContent !== '') {
+    if (cells[i].textContent !== '' || checkWin(currentPlayer) || checkTie()) {
       return; 
     }
-    cells[i].textContent = currentPlayer; 
+    cells[i].textContent = currentPlayer;
     if (checkWin(currentPlayer)) {
-      endMessage.textContent = `Game over! ${currentPlayer} wins!`;
+      message.textContent = `Game over! ${currentPlayer} wins!`;
       return; 
     }
     if (checkTie()) {
-      endMessage.textContent = `Game is tied!`;
+      message.textContent = `Game is tied!`;
       return; 
     }
     currentPlayer = (currentPlayer === players[0]) ? players[1] : players[0];
     if (currentPlayer == players[0]) {
-      endMessage.textContent = `X turn`;
+      message.textContent = `X turn`;
     } else {
-      endMessage.textContent = `O turn`; 
+      message.textContent = `O turn`; 
     }
   });
 }
@@ -59,11 +59,11 @@ function checkTie() {
   return true; 
 }
 
-function restartButton() {
+function restartGame() {
   for (let i = 0; i < cells.length; ++i) {
     cells[i].textContent = ''; 
   }
-  endMessage.textContent = `X turn!`;
+  message.textContent = `X turn!`;
   currentPlayer = players[0];
 }
 
